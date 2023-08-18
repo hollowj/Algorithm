@@ -1,6 +1,7 @@
 package dp
 
 import (
+	"math"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,11 +14,15 @@ func minCostClimbingStairs(cost []int) int {
 	}
 	return dp[len(cost)]
 }
-func min(a, b int) int {
-	if a < b {
-		return a
+func min(arr ...int) int {
+	minNum := math.MaxInt
+	for _, num := range arr {
+		if num < minNum {
+			minNum = num
+		}
 	}
-	return b
+
+	return minNum
 }
 func TestT746(t *testing.T) {
 	assert.Equal(t, 15, minCostClimbingStairs([]int{10, 15, 20}))
