@@ -1,6 +1,7 @@
 package arr
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -69,4 +70,12 @@ func TestT27(t *testing.T) {
 	assert.Equal(t, 5, removeElement([]int{0, 1, 2, 2, 3, 0, 4, 2}, 2))
 	assert.Equal(t, 0, removeElement([]int{}, 0))
 	assert.Equal(t, 0, removeElement([]int{1}, 1))
+}
+
+func TestOffset(t *testing.T) {
+	arr := make([][]byte, 2)
+	for i := 0; i < 2; i++ {
+		arr[i] = make([]byte, 2)
+	}
+	fmt.Printf("%p %p", &arr[0][0], &arr[1][1])
 }
