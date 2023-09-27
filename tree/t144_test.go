@@ -10,20 +10,51 @@ import (
 func preorderTraversal(root *TreeNode) []int {
 	arr := make([]int, 0)
 	stack := linkedliststack.New()
-	stack.Push(root)
+	if root != nil {
+		stack.Push(root)
+	}
 	for !stack.Empty() {
-		value, _ := stack.Pop()
-		treeNode := value.(*TreeNode)
-		arr = append(arr, treeNode.Val)
-		if treeNode.Right != nil {
-			stack.Push(treeNode.Right)
+		value, _ := stack.Peek()
+		if value != nil {
+			stack.Pop()
+			cur := value.(*TreeNode)
+			if cur.Right != nil {
+				stack.Push(cur.Right)
+			}
+			if cur.Left != nil {
+				stack.Push(cur.Left)
+			}
+			stack.Push(cur)
+			stack.Push(nil)
+		} else {
+			stack.Pop()
+			value, _ = stack.Pop()
+			cur := value.(*TreeNode)
+			arr = append(arr, cur.Val)
+
 		}
-		if treeNode.Left != nil {
-			stack.Push(treeNode.Left)
-		}
+
 	}
 	return arr
 }
+
+//func preorderTraversal(root *TreeNode) []int {
+//	arr := make([]int, 0)
+//	stack := linkedliststack.New()
+//	stack.Push(root)
+//	for !stack.Empty() {
+//		value, _ := stack.Pop()
+//		treeNode := value.(*TreeNode)
+//		arr = append(arr, treeNode.Val)
+//		if treeNode.Right != nil {
+//			stack.Push(treeNode.Right)
+//		}
+//		if treeNode.Left != nil {
+//			stack.Push(treeNode.Left)
+//		}
+//	}
+//	return arr
+//}
 
 //func preorderTraversal(root *TreeNode) []int {
 //	arr := make([]int, 0)

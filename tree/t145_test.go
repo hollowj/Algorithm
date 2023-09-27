@@ -1,6 +1,7 @@
 package tree
 
 import (
+	"container/list"
 	"testing"
 
 	"github.com/emirpasic/gods/stacks/linkedliststack"
@@ -9,30 +10,63 @@ import (
 
 func postorderTraversal(root *TreeNode) []int {
 	arr := make([]int, 0)
+	list.New()
 	stack := linkedliststack.New()
-	stack.Push(root)
-	for !stack.Empty() {
-		value, _ := stack.Pop()
-		treeNode := value.(*TreeNode)
-		arr = append(arr, treeNode.Val)
-		if treeNode.Left != nil {
-			stack.Push(treeNode.Left)
-		}
-		if treeNode.Right != nil {
-			stack.Push(treeNode.Right)
-		}
+	if root != nil {
+		stack.Push(root)
 	}
-	reverse(arr)
+	for !stack.Empty() {
+		value, _ := stack.Peek()
+		if value != nil {
+			stack.Pop()
+			cur := value.(*TreeNode)
+			stack.Push(cur)
+			stack.Push(nil)
+			if cur.Right != nil {
+				stack.Push(cur.Right)
+			}
+			if cur.Left != nil {
+				stack.Push(cur.Left)
+			}
+		} else {
+			stack.Pop()
+			value, _ = stack.Pop()
+			cur := value.(*TreeNode)
+			arr = append(arr, cur.Val)
+
+		}
+
+	}
 	return arr
 }
 
-func reverse(a []int) {
-	l, r := 0, len(a)-1
-	for l < r {
-		a[l], a[r] = a[r], a[l]
-		l, r = l+1, r-1
-	}
-}
+//
+//func postorderTraversal(root *TreeNode) []int {
+//	arr := make([]int, 0)
+//	stack := linkedliststack.New()
+//	stack.Push(root)
+//	for !stack.Empty() {
+//		value, _ := stack.Pop()
+//		treeNode := value.(*TreeNode)
+//		arr = append(arr, treeNode.Val)
+//		if treeNode.Left != nil {
+//			stack.Push(treeNode.Left)
+//		}
+//		if treeNode.Right != nil {
+//			stack.Push(treeNode.Right)
+//		}
+//	}
+//	reverse(arr)
+//	return arr
+//}
+//
+//func reverse(a []int) {
+//	l, r := 0, len(a)-1
+//	for l < r {
+//		a[l], a[r] = a[r], a[l]
+//		l, r = l+1, r-1
+//	}
+//}
 
 //func postorderTraversal(root *TreeNode) []int {
 //	arr := make([]int, 0)

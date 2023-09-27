@@ -11,6 +11,9 @@ func NewTreeNode(val int) *TreeNode {
 }
 
 func buildTree(arr []int) *TreeNode {
+	if len(arr) == 0 {
+		return nil
+	}
 	root := NewTreeNode(arr[0])
 	treeNodes := []*TreeNode{root}
 	index := 1
