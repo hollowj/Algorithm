@@ -1,5 +1,9 @@
 package tree
 
+import "math"
+
+const null = math.MinInt
+
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -20,13 +24,13 @@ func buildTree(arr []int) *TreeNode {
 	for index < len(arr) {
 		node := treeNodes[0]
 		if index < len(arr) {
-			if arr[index] != -1 {
+			if arr[index] != null {
 				node.Left = NewTreeNode(arr[index])
 				treeNodes = append(treeNodes, node.Left)
 			}
 			index++
 		}
-		if index < len(arr) && arr[index] != -1 {
+		if index < len(arr) && arr[index] != null {
 			node.Right = NewTreeNode(arr[index])
 			treeNodes = append(treeNodes, node.Right)
 		}

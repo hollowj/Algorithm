@@ -2,6 +2,7 @@ package tree
 
 import (
 	"container/list"
+	"math"
 	"testing"
 
 	"github.com/emirpasic/gods/stacks/linkedliststack"
@@ -84,5 +85,5 @@ func postorderTraversal(root *TreeNode) []int {
 //}
 
 func TestT145(t *testing.T) {
-	assert.Equal(t, []int{3, 2, 1}, postorderTraversal(buildTree([]int{1, -1, 2, 3})))
+	assert.Equal(t, []int{3, 2, 1}, postorderTraversal(buildTree([]int{1, math.MinInt, 2, 3})))
 }
