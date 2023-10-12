@@ -11,6 +11,9 @@ type TreeNode struct {
 }
 
 func (t *TreeNode) FloorArray() []int {
+	if t == nil {
+		return []int{}
+	}
 	result := []int{}
 	floor := []*TreeNode{t}
 	for len(floor) > 0 {
@@ -29,8 +32,7 @@ func (t *TreeNode) FloorArray() []int {
 				nextFloor = append(nextFloor, node.Right)
 			} else {
 				result = append(result, null)
-				nextFloor = append(nextFloor, nil)
-				nextFloor = append(nextFloor, nil)
+
 			}
 		}
 		if hasNextFloor {

@@ -43,20 +43,21 @@ import (
 
 func binaryTreePaths(root *TreeNode) []string {
 	results := make([]string, 0)
+	var dfs func(root *TreeNode, prefix string, results *[]string)
+	dfs = func(root *TreeNode, prefix string, results *[]string) {
+		if root == nil {
+			return
+		}
+		if root.Left == nil && root.Right == nil {
+			*results = append(*results, prefix+strconv.Itoa(root.Val))
+		}
+		temp := prefix + strconv.Itoa(root.Val) + "->"
+		dfs(root.Left, temp, results)
+		dfs(root.Right, temp, results)
+
+	}
 	dfs(root, "", &results)
 	return results
-}
-func dfs(root *TreeNode, prefix string, results *[]string) {
-	if root == nil {
-		return
-	}
-	if root.Left == nil && root.Right == nil {
-		*results = append(*results, prefix+strconv.Itoa(root.Val))
-	}
-	temp := prefix + strconv.Itoa(root.Val) + "->"
-	dfs(root.Left, temp, results)
-	dfs(root.Right, temp, results)
-
 }
 func TestT257(t *testing.T) {
 	assert.Equal(t, []string{"1->2->5", "1->3"}, binaryTreePaths(buildTree([]int{1, 2, 3, null, 5})))
