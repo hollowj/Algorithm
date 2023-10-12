@@ -1,6 +1,7 @@
 package tree
 
 import (
+	"fmt"
 	"math"
 	"testing"
 
@@ -79,6 +80,9 @@ func TestT94(t *testing.T) {
 	assert.Equal(t, []int{1, 3, 2}, inorderTraversal(buildTree([]int{1, math.MinInt, 2, 3})))
 	assert.Equal(t, []int{}, inorderTraversal(buildTree([]int{})))
 	assert.Equal(t, []int{1}, inorderTraversal(buildTree([]int{1})))
+	fmt.Println(preorderTraversal(buildTree([]int{3, 9, 20, 6, 12, 15, 7})))
+	fmt.Println(inorderTraversal(buildTree([]int{3, 9, 20, 6, 12, 15, 7})))
+	fmt.Println(postorderTraversal(buildTree([]int{3, 9, 20, 6, 12, 15, 7})))
 }
 
 //
