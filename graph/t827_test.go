@@ -6,77 +6,63 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type pos struct {
-	x, y int
-}
-
 func largestIsland(grid [][]int) int {
-	findSet := make(map[pos]*pos)
-	result := make([][]int, len(grid))
-	for i := 0; i < len(grid); i++ {
-		result[i] = make([]int, len(grid[0]))
-	}
-	var dfs func(x, y int) int
+	result := make(map[int]int)
+
+	var dfs func(x, y, iNo int) int
 	dirs := [][]int{{-1, 0}, {1, 0}, {0, 1}, {0, -1}}
-	getRootPos := func(x, y int) *pos {
-		cur := pos{x, y}
-		for findSet[cur] != nil {
-			tmp := *findSet[cur]
-			if cur == tmp {
-				break
-			}
-			cur = tmp
-		}
-		return &cur
-	}
-	dfs = func(x, y int) int {
-		grid[x][y] = 2
+	m, n := len(grid), len(grid[0])
+	dfs = func(x, y, iNo int) int {
+		grid[x][y] = iNo
 		count := 1
 		for _, dir := range dirs {
 			nextX, nextY := x+dir[0], y+dir[1]
-			if nextX < 0 || nextY < 0 || nextY >= len(grid[0]) || nextX >= len(grid) {
+			if nextX < 0 || nextY < 0 || nextY >= n || nextX >= m {
 				continue
 			}
 			if grid[nextX][nextY] == 1 {
-				findSet[pos{nextX, nextY}] = getRootPos(x, y)
-				count += dfs(nextX, nextY)
+				count += dfs(nextX, nextY, iNo)
 			}
 
 		}
 		return count
 	}
-	getCount := func(x, y int) int {
-		rootPos := getRootPos(x, y)
-		return result[rootPos.x][rootPos.y]
-	}
+	iNo := 2
 	iMaxArea := 0
-	for i := 0; i < len(grid); i++ {
-		for j := 0; j < len(grid[0]); j++ {
+	isAllGrid := true
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
 			if grid[i][j] == 1 {
-				result[i][j] = dfs(i, j)
-				if result[i][j] > iMaxArea {
-					iMaxArea = result[i][j]
+				result[iNo] = dfs(i, j, iNo)
+				if result[iNo] > iMaxArea {
+					iMaxArea = result[iNo]
 				}
+				iNo++
+			} else if grid[i][j] == 0 {
+				isAllGrid = false
 			}
 		}
 	}
-	for i := 0; i < len(grid); i++ {
-		for j := 0; j < len(grid[0]); j++ {
+	if isAllGrid {
+		return m * n
+	}
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
 			if grid[i][j] == 0 {
-				m := make(map[pos]struct{})
+				iCount := 1
+				set := make(map[int]struct{})
 				for _, dir := range dirs {
 					nextX, nextY := i+dir[0], j+dir[1]
-					if nextX < 0 || nextY < 0 || nextY >= len(grid[0]) || nextX >= len(grid) {
+					if nextX < 0 || nextY < 0 || nextY >= n || nextX >= m {
 						continue
 					}
-					if grid[nextX][nextY] == 2 {
-						m[*getRootPos(nextX, nextY)] = struct{}{}
+					if grid[nextX][nextY] > 1 {
+						if _, ok := set[grid[nextX][nextY]]; !ok {
+							iCount += result[grid[nextX][nextY]]
+							set[grid[nextX][nextY]] = struct{}{}
+						}
 					}
 
-				}
-				iCount := 1
-				for p, _ := range m {
-					iCount += getCount(p.x, p.y)
 				}
 				if iCount > iMaxArea {
 					iMaxArea = iCount
