@@ -60,7 +60,7 @@ func (this *Skiplist) Search(num int) bool {
 		for cur.next[i] != nil && cur.next[i].val < num {
 			cur = cur.next[i]
 		}
-		if cur.next[i].val == num {
+		if cur.next[i] != nil && cur.next[i].val == num {
 			return true
 		}
 
