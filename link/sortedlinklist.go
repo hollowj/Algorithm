@@ -21,7 +21,7 @@ type SortedLinkList struct {
 	head *Node
 }
 
-func NewSortedLinkList() *SortedLinkList {
+func NewSortedLinkList() SortedList {
 	return &SortedLinkList{head: NewNode(0)}
 }
 
