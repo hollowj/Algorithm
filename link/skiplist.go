@@ -13,28 +13,28 @@ func NewSkipNode(val, level int) *SkipNode {
 	return &SkipNode{val: val, next: make([]*SkipNode, level+1)}
 }
 
-type SkipList struct {
+type Skiplist struct {
 	head *SkipNode
 }
 
-func NewSkipList() *SkipList {
-	return &SkipList{head: NewSkipNode(0, 0)}
+func NewSkipList() *Skiplist {
+	return &Skiplist{head: NewSkipNode(0, 0)}
 }
 
-func (l *SkipList) Roll() int {
+func (this *Skiplist) Roll() int {
 	var level int
 	for rand.Intn(2) == 0 {
 		level++
 	}
 	return level
 }
-func (l *SkipList) Add(num int) {
-	level := l.Roll()
-	for len(l.head.next) < level+1 {
-		l.head.next = append(l.head.next, nil)
+func (this *Skiplist) Add(num int) {
+	level := this.Roll()
+	for len(this.head.next) < level+1 {
+		this.head.next = append(this.head.next, nil)
 	}
 	node := NewSkipNode(num, level)
-	cur := l.head
+	cur := this.head
 	for i := level; i >= 0; i-- {
 		for cur.next[i] != nil && cur.next[i].val <= num {
 			cur = cur.next[i]
@@ -44,9 +44,9 @@ func (l *SkipList) Add(num int) {
 	}
 
 }
-func (l *SkipList) ToArray() []int {
-	level := len(l.head.next) - 1
-	tmp := l.head
+func (this *Skiplist) ToArray() []int {
+	level := len(this.head.next) - 1
+	tmp := this.head
 	nums := make([]int, 0)
 	for tmp.next[level] != nil {
 		nums = append(nums, tmp.next[level].val)
@@ -54,9 +54,9 @@ func (l *SkipList) ToArray() []int {
 	}
 	return nums
 }
-func (l *SkipList) Search(num int) bool {
-	cur := l.head
-	for i := len(l.head.next) - 1; i >= 0; i-- {
+func (this *Skiplist) Search(num int) bool {
+	cur := this.head
+	for i := len(this.head.next) - 1; i >= 0; i-- {
 		for cur.next[i] != nil && cur.next[i].val < num {
 			cur = cur.next[i]
 		}
@@ -67,10 +67,10 @@ func (l *SkipList) Search(num int) bool {
 	}
 	return false
 }
-func (l *SkipList) Erase(num int) bool {
+func (this *Skiplist) Erase(num int) bool {
 	ok := false
-	cur := l.head
-	for i := len(l.head.next) - 1; i >= 0; i-- {
+	cur := this.head
+	for i := len(this.head.next) - 1; i >= 0; i-- {
 		for cur.next[i] != nil && cur.next[i].val < num {
 			cur = cur.next[i]
 		}
@@ -81,18 +81,18 @@ func (l *SkipList) Erase(num int) bool {
 
 	}
 	nilLevelCount := 0
-	for i := len(l.head.next) - 1; i >= 0 && l.head.next[i] == nil; i-- {
+	for i := len(this.head.next) - 1; i >= 0 && this.head.next[i] == nil; i-- {
 		nilLevelCount++
 	}
 	if nilLevelCount > 0 {
-		l.head.next = l.head.next[:len(l.head.next)-nilLevelCount]
+		this.head.next = this.head.next[:len(this.head.next)-nilLevelCount]
 	}
 	return ok
 }
-func (l *SkipList) Range(begin, end int) []int {
+func (this *Skiplist) Range(begin, end int) []int {
 	nums := make([]int, 0)
-	cur := l.head
-	for i := len(l.head.next) - 1; i >= 0; i-- {
+	cur := this.head
+	for i := len(this.head.next) - 1; i >= 0; i-- {
 		for cur.next[i] != nil && cur.next[i].val < begin {
 			cur = cur.next[i]
 		}
